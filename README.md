@@ -1,50 +1,120 @@
-# Welcome to your Expo app 👋
+# 🎓 Divine Mission School ERP System
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A modern **School ERP (Enterprise Resource Planning) System** designed to simplify and digitize daily school operations.
+This project helps manage students, attendance, fees, and administration in a single platform.
 
-## Get started
+---
 
-1. Install dependencies
+## 🚀 Features
 
-   ```bash
-   npm install
-   ```
+* 👨‍🎓 Student Management System
+* 📅 Attendance Tracking
+* 💰 Fees Management
+* 🧑‍🏫 Admin Dashboard
+* 📊 Clean and User-friendly UI
+* 📱 Responsive design for desktop and mobile
 
-2. Start the app
+---
 
-   ```bash
-   npx expo start
-   ```
+## 🛠️ Tech Stack
 
-In the output, you'll find options to open the app in a
+**Frontend:**
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+* React.js
+* Tailwind CSS
+* JavaScript
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+**Backend:**
 
-## Get a fresh project
+* NOT YET
 
-When you're ready, run:
+**Other Tools:**
 
-```bash
-npm run reset-project
+* Git & GitHub
+* VS Code
+
+---
+
+## 📂 Project Structure
+
+```
+school-erp-app/
+│
+├── frontend/
+├── components/
+├── pages/
+├── public/
+└── README.md
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## ⚙️ Installation & Setup
 
-To learn more about developing your project with Expo, look at the following resources:
+Follow these steps to run the project locally:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### 1️⃣ Clone the repository
 
-## Join the community
+```bash
+git clone https://github.com/Harshit9905/Divine-Mission-School.git
+```
 
-Join our community of developers creating universal apps.
+### 2️⃣ Go to project folder
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+cd Divine-Mission-School
+```
+
+### 3️⃣ Install dependencies
+
+```bash
+npm install
+```
+
+### 4️⃣ Start development server
+
+```bash
+npm run dev
+```
+
+---
+
+## 📸 Screenshots
+
+```
+/screenshots/ADMIN-DASH.jpg
+/screenshots/LOGIN.jpg
+/screenshots/PAR-DASH.jpg
+/screenshots/STU.jpg
+/screenshots/TCH-DASH.jpg
+```
+
+---
+
+## 🎯 Future Improvements
+
+* 🔐 Authentication (Login/Signup)
+* 📊 Advanced analytics dashboard
+* 📧 Email/SMS notification system
+* 🧾 Report generation (PDF)
+* 🌐 Deployment (Live hosting)
+
+---
+
+## 👨‍💻 Author
+
+**Harshit Raj**
+📧 Email: [harshitraj456z@gmail.com](mailto:harshitraj456z@gmail.com)
+📞 Phone: 7634938203
+
+---
+
+## ⭐ Show Your Support
+
+If you like this project, give it a ⭐ on GitHub and share it!
+
+---
+
+## 📌 Note
+
+This project is built for learning and demonstration purposes as part of a Computer Science Engineering journey.
