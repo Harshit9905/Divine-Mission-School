@@ -3,7 +3,6 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
     Alert,
-    Image,
     KeyboardAvoidingView,
     Modal,
     Platform,
@@ -16,9 +15,42 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+const adminInfo = {
+  name: "Sanjeev Anand",
+  email: "divinemandro@gmail.com",
+  phone: "+91 9931338729",
+  role: "Principal (admin)",
+  designation: "Principal",
+  joinedDate: "2007",
+  school: "Divine Mission School",
+};
+
+const Row = ({ label, value }: any) => (
+  <View style={styles.row}>
+    <Text style={styles.label}>{label}</Text>
+    <Text style={styles.value}>{value}</Text>
+  </View>
+);
+
+const Section = ({ title, children }: any) => (
+  <View style={styles.section}>
+    <Text style={styles.sectionTitle}>{title}</Text>
+    <View style={styles.card}>{children}</View>
+  </View>
+);
+
+const ActionItem = ({ icon, title, onPress }: any) => (
+  <TouchableOpacity style={styles.actionRow} onPress={onPress}>
+    <View style={styles.actionLeft}>
+      <Ionicons name={icon} size={20} color="#4A4AFF" />
+      <Text style={styles.actionText}>{title}</Text>
+    </View>
+    <Ionicons name="chevron-forward" size={18} color="#94A3B8" />
+  </TouchableOpacity>
+);
+
 export default function Profile() {
   const router = useRouter();
-
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [oldPass, setOldPass] = useState("");
   const [newPass, setNewPass] = useState("");
@@ -57,54 +89,39 @@ export default function Profile() {
   };
 
   return (
-    <SafeAreaView style={styles.safe}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.container}>
-        {/* ===== HEADER ===== */}
-        <View style={styles.profileCard}>
-          <Image
-            source={require("../../assets/harshit.jpg")}
-            style={styles.avatar}
-          />
-          <Text style={styles.name}>Harshit Raj</Text>
-          <Text style={styles.sub}>Class 10 • Roll No 01</Text>
+    <SafeAreaView style={styles.container}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Profile</Text>
         </View>
 
-        {/* STUDENT INFO */}
-        <Section title="Student Information">
-          <Row label="Age" value="01" />
-          <Row label="Blood Group" value="O Negative" />
-          <Row label="Class Teacher" value="Mr. Verma" />
-          <Row label="Address" value="Gauripur" />
-        </Section>
+        {/* ADMIN PROFILE */}
+        <Section title="Admin Information">
+          <View style={styles.profileHeader}>
+            <View style={styles.avatarContainer}>
+              <Text style={styles.avatar}>
+                {adminInfo.name
+                  .split(" ")
+                  .map((n) => n[0])
+                  .join("")}
+              </Text>
+            </View>
+            <View style={styles.profileInfo}>
+              <Text style={styles.profileName}>{adminInfo.name}</Text>
+              <Text style={styles.profileRole}>{adminInfo.designation}</Text>
+              <Text style={styles.profileSchool}>{adminInfo.school}</Text>
+            </View>
+          </View>
 
-        {/* PARENT DETAILS */}
-        <Section title="Parent Details">
-          <Row label="Father" value="Rajeev Kumar Pandey" />
-          <Row label="Mother" value="Soni Pandey" />
-          <Row label="Contact" value="7634938203" />
-          <Row label="Email" value="harshitraj456z@gmail.com" />
-        </Section>
-
-        {/* MEDICAL */}
-        <Section title="Medical History">
-          <Row label="Allergies" value="Penicillin, Dust" />
-          <Row label="Medication" value="Asthma Inhaler (if required)" />
-          <Row label="Note" value="Immediate attention during breathing issues" />
+          <Row label="Email" value={adminInfo.email} />
+          <Row label="Phone" value={adminInfo.phone} />
+          <Row label="Role" value={adminInfo.role} />
+          <Row label="Joined" value={adminInfo.joinedDate} />
         </Section>
 
         {/* ACCOUNT */}
         <Text style={styles.sectionTitle}>Account</Text>
         <View style={styles.card}>
-          <ActionItem
-            icon="create-outline"
-            title="Edit Profile"
-            onPress={() =>
-              Alert.alert(
-                "Contact Admin",
-                "Please contact school administration to update profile details."
-              )
-            }
-          />
           <ActionItem
             icon="lock-closed-outline"
             title="Change Password"
@@ -122,11 +139,13 @@ export default function Profile() {
           />
         </View>
 
-        {/* LOGOUT */}
+        {/* LOGOUT BUTTON */}
         <TouchableOpacity style={styles.logoutBtn} onPress={logout}>
           <Ionicons name="log-out-outline" size={20} color="#fff" />
           <Text style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
+
+        <View style={{ height: 20 }} />
       </ScrollView>
 
       {/* CHANGE PASSWORD MODAL */}
@@ -174,74 +193,117 @@ export default function Profile() {
   );
 }
 
-/* REUSABLE */
-const Row = ({ label, value }: any) => (
-  <View style={styles.row}>
-    <Text style={styles.label}>{label}</Text>
-    <Text style={styles.value}>{value}</Text>
-  </View>
-);
-
-const Section = ({ title, children }: any) => (
-  <>
-    <Text style={styles.sectionTitle}>{title}</Text>
-    <View style={styles.card}>{children}</View>
-  </>
-);
-
-const ActionItem = ({ icon, title, onPress }: any) => (
-  <TouchableOpacity style={styles.actionRow} onPress={onPress}>
-    <View style={styles.actionLeft}>
-      <Ionicons name={icon} size={20} color="#4A4AFF" />
-      <Text style={styles.actionText}>{title}</Text>
-    </View>
-    <Ionicons name="chevron-forward" size={18} color="#94A3B8" />
-  </TouchableOpacity>
-);
-
-/* STYLES */
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: "#F5F6FF" },
-  container: { padding: 16 },
-
-  profileCard: {
-    backgroundColor: "#020617",
-    borderRadius: 26,
-    padding: 20,
-    alignItems: "center",
-    marginBottom: 20,
+  container: {
+    flex: 1,
+    backgroundColor: "#F5F6FF",
   },
-  avatar: { width: 90, height: 90, borderRadius: 45, marginBottom: 10 },
-  name: { color: "#fff", fontSize: 20, fontWeight: "800" },
-  sub: { color: "#CBD5E1", fontSize: 12 },
-
-  sectionTitle: { fontSize: 16, fontWeight: "800", marginBottom: 8 },
+  header: {
+    backgroundColor: "#020617",
+    padding: 16,
+    paddingTop: 20,
+    marginBottom: 16,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "800",
+    color: "#FFFFFF",
+  },
+  section: {
+    paddingHorizontal: 16,
+    marginBottom: 16,
+  },
+  sectionTitle: { fontSize: 16, fontWeight: "800", marginBottom: 8, marginLeft: 16 },
   card: {
     backgroundColor: "#fff",
     borderRadius: 16,
     padding: 14,
     marginBottom: 16,
     elevation: 4,
+    marginHorizontal: 16,
   },
 
-  row: { flexDirection: "row", justifyContent: "space-between", marginBottom: 8 },
-  label: { color: "#64748B", fontSize: 12 },
-  value: { fontWeight: "700", fontSize: 13, maxWidth: "60%", textAlign: "right" },
-
+  profileHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 16,
+    paddingBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: "#F1F5F9",
+  },
+  avatarContainer: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: "#4A4AFF",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 16,
+  },
+  avatar: {
+    fontSize: 24,
+    fontWeight: "800",
+    color: "#FFFFFF",
+  },
+  profileInfo: {
+    flex: 1,
+  },
+  profileName: {
+    fontSize: 16,
+    fontWeight: "800",
+    color: "#020617",
+  },
+  profileRole: {
+    fontSize: 13,
+    color: "#4A4AFF",
+    marginTop: 2,
+    fontWeight: "700",
+  },
+  profileSchool: {
+    fontSize: 11,
+    color: "#64748B",
+    marginTop: 2,
+  },
+  row: {
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#F1F5F9",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  label: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: "#64748B",
+    flex: 1,
+  },
+  value: {
+    fontSize: 13,
+    fontWeight: "700",
+    color: "#020617",
+    flex: 1,
+    textAlign: "right",
+  },
   actionRow: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 14 },
   actionLeft: { flexDirection: "row", alignItems: "center" },
   actionText: { marginLeft: 10, fontSize: 14, fontWeight: "600" },
-
   logoutBtn: {
     backgroundColor: "#DC2626",
     borderRadius: 16,
     padding: 14,
     flexDirection: "row",
     justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: 16,
     marginBottom: 30,
+    gap: 8,
   },
-  logoutText: { color: "#fff", fontWeight: "700", marginLeft: 6 },
-
+  logoutText: {
+    color: "#fff",
+    fontWeight: "700",
+    fontSize: 14,
+  },
   modalBg: { flex: 1, backgroundColor: "rgba(0,0,0,0.5)", justifyContent: "center" },
   modalCard: { backgroundColor: "#fff", margin: 20, borderRadius: 20, padding: 20 },
   modalTitle: { fontSize: 18, fontWeight: "800", marginBottom: 12 },

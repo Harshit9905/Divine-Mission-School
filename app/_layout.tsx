@@ -1,7 +1,7 @@
 import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
+    DarkTheme,
+    DefaultTheme,
+    ThemeProvider,
 } from "@react-navigation/native";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -11,7 +11,7 @@ import { useColorScheme } from "@/hooks/use-color-scheme";
 import { CartProvider } from "./context/CartContext";
 
 export const unstable_settings = {
-  anchor: "(tabs)",
+  anchor: "login",
 };
 
 export default function RootLayout() {
@@ -24,7 +24,23 @@ export default function RootLayout() {
       >
         <Stack>
           <Stack.Screen
+            name="login"
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
             name="(tabs)"
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="teacher"
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="parent"
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="admin"
             options={{ headerShown: false }}
           />
           <Stack.Screen

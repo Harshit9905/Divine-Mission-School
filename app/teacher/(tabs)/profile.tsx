@@ -16,6 +16,31 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+/* REUSABLE COMPONENTS */
+const Row = ({ label, value }: any) => (
+  <View style={styles.row}>
+    <Text style={styles.label}>{label}</Text>
+    <Text style={styles.value}>{value}</Text>
+  </View>
+);
+
+const Section = ({ title, children }: any) => (
+  <>
+    <Text style={styles.sectionTitle}>{title}</Text>
+    <View style={styles.card}>{children}</View>
+  </>
+);
+
+const ActionItem = ({ icon, title, onPress }: any) => (
+  <TouchableOpacity style={styles.actionRow} onPress={onPress}>
+    <View style={styles.actionLeft}>
+      <Ionicons name={icon} size={20} color="#4A4AFF" />
+      <Text style={styles.actionText}>{title}</Text>
+    </View>
+    <Ionicons name="chevron-forward" size={18} color="#94A3B8" />
+  </TouchableOpacity>
+);
+
 export default function Profile() {
   const router = useRouter();
 
@@ -61,50 +86,69 @@ export default function Profile() {
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.container}>
         {/* ===== HEADER ===== */}
         <View style={styles.profileCard}>
-          <Image
-            source={require("../../assets/harshit.jpg")}
-            style={styles.avatar}
-          />
-          <Text style={styles.name}>Harshit Raj</Text>
-          <Text style={styles.sub}>Class 10 • Roll No 01</Text>
+          <View style={styles.profileLeft}>
+            <Image
+              source={require("../../../assets/teacher.avif")}
+              style={styles.avatar}
+            />
+            <View>
+              <Text style={styles.name}>Mr. Rajesh Kumar</Text>
+              <Text style={styles.sub}>Mathematics Department</Text>
+            </View>
+          </View>
+          
+          <View style={styles.profileRight}>
+            <Image
+              source={require("../../../assets/school_logo.png")}
+              style={styles.schoolLogo}
+              resizeMode="contain"
+            />
+            <Text style={styles.schoolName}>Divine Mission{"\n"}School</Text>
+          </View>
         </View>
 
-        {/* STUDENT INFO */}
-        <Section title="Student Information">
-          <Row label="Age" value="01" />
-          <Row label="Blood Group" value="O Negative" />
-          <Row label="Class Teacher" value="Mr. Verma" />
-          <Row label="Address" value="Gauripur" />
+        {/* PROFESSIONAL INFO */}
+        <Section title="Professional Details">
+          <Row label="Employee ID" value="DIVM001" />
+          <Row label="Department" value="Mathematics" />
+          <Row label="Qualification" value="B.Sc, B.Ed" />
+          <Row label="Experience" value="12 Years" />
         </Section>
 
-        {/* PARENT DETAILS */}
-        <Section title="Parent Details">
-          <Row label="Father" value="Rajeev Kumar Pandey" />
-          <Row label="Mother" value="Soni Pandey" />
-          <Row label="Contact" value="7634938203" />
-          <Row label="Email" value="harshitraj456z@gmail.com" />
+        {/* PERSONAL INFO */}
+        <Section title="Personal Information">
+          <Row label="Age" value="38" />
+          <Row label="Blood Group" value="B Positive" />
+          <Row label="Address" value="Mandro,Jharkhand,India" />
+          <Row label="Gender" value="Male" />
         </Section>
 
-        {/* MEDICAL */}
+        {/* FAMILY DETAILS */}
+        <Section title="Family Details">
+          <Row label="Father" value="Mr. Ashok Kumar" />
+          <Row label="Mother" value="Mrs. Lakshmi Kumari" />
+          <Row label="Emergency Contact" value="+91 98765 43210" />
+          <Row label="Relation" value="Self" />
+        </Section>
+
+        {/* MEDICAL HISTORY */}
         <Section title="Medical History">
-          <Row label="Allergies" value="Penicillin, Dust" />
-          <Row label="Medication" value="Asthma Inhaler (if required)" />
-          <Row label="Note" value="Immediate attention during breathing issues" />
+          <Row label="Allergies" value="None" />
+          <Row label="Medication" value="Blood Pressure (ongoing)" />
+          <Row label="Note" value="Regular checkups recommended" />
         </Section>
 
         {/* ACCOUNT */}
+        <Text style={styles.sectionTitle}>Contact Information</Text>
+        <View style={styles.card}>
+          <Row label="Email" value="rajeshdivinemandro@gmail.com" />
+          <Row label="Phone" value="+91 98765 43210" />
+          <Row label="School" value="Divine Mission School" />
+        </View>
+
+        {/* ACCOUNT ACTIONS */}
         <Text style={styles.sectionTitle}>Account</Text>
         <View style={styles.card}>
-          <ActionItem
-            icon="create-outline"
-            title="Edit Profile"
-            onPress={() =>
-              Alert.alert(
-                "Contact Admin",
-                "Please contact school administration to update profile details."
-              )
-            }
-          />
           <ActionItem
             icon="lock-closed-outline"
             title="Change Password"
@@ -174,31 +218,6 @@ export default function Profile() {
   );
 }
 
-/* REUSABLE */
-const Row = ({ label, value }: any) => (
-  <View style={styles.row}>
-    <Text style={styles.label}>{label}</Text>
-    <Text style={styles.value}>{value}</Text>
-  </View>
-);
-
-const Section = ({ title, children }: any) => (
-  <>
-    <Text style={styles.sectionTitle}>{title}</Text>
-    <View style={styles.card}>{children}</View>
-  </>
-);
-
-const ActionItem = ({ icon, title, onPress }: any) => (
-  <TouchableOpacity style={styles.actionRow} onPress={onPress}>
-    <View style={styles.actionLeft}>
-      <Ionicons name={icon} size={20} color="#4A4AFF" />
-      <Text style={styles.actionText}>{title}</Text>
-    </View>
-    <Ionicons name="chevron-forward" size={18} color="#94A3B8" />
-  </TouchableOpacity>
-);
-
 /* STYLES */
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: "#F5F6FF" },
@@ -209,9 +228,22 @@ const styles = StyleSheet.create({
     borderRadius: 26,
     padding: 20,
     alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 20,
   },
-  avatar: { width: 90, height: 90, borderRadius: 45, marginBottom: 10 },
+  profileLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+  },
+  profileRight: {
+    alignItems: "center",
+    marginLeft: 12,
+  },
+  avatar: { width: 70, height: 70, borderRadius: 35, marginRight: 12 },
+  schoolLogo: { width: 50, height: 50, marginBottom: 8, borderRadius: 25, backgroundColor: "#FFFFFF" },
+  schoolName: { color: "#E5E7EB", fontSize: 10, fontWeight: "600", textAlign: "center" },
   name: { color: "#fff", fontSize: 20, fontWeight: "800" },
   sub: { color: "#CBD5E1", fontSize: 12 },
 

@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TextInput,
@@ -14,12 +15,21 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+/* ================= ROLES ================= */
 const ROLES = [
   { key: "student", label: "Student", icon: "school-outline" },
   { key: "teacher", label: "Teacher", icon: "person-outline" },
   { key: "parent", label: "Parent", icon: "people-outline" },
   { key: "admin", label: "Admin", icon: "settings-outline" },
 ];
+
+/* ================= CREDENTIALS ================= */
+const CREDENTIALS = {
+  student: { id: "STU001", password: "0000" },
+  teacher: { id: "TCH001", password: "1111" },
+  parent: { id: "PAR001", password: "2222" },
+  admin: { id: "ADMIN001", password: "5555" },
+};
 
 export default function Login() {
   const router = useRouter();
@@ -28,120 +38,251 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  /* ================= LOGIN ================= */
   const login = () => {
     if (!username || !password) {
-      alert("Please enter ID and password");
+      alert("Please enter ID and Password");
       return;
     }
 
+    const creds =
+      CREDENTIALS[role as keyof typeof CREDENTIALS];
+
+    if (
+      username !== creds.id ||
+      password !== creds.password
+    ) {
+      alert("Invalid ID or Password");
+      return;
+    }
+
+    /* ROUTING */
     if (role === "student") {
-      router.replace("/student"); // ✅ FIXED
+      router.replace("/(tabs)");
       return;
     }
 
-    alert(`${role} panel coming soon`);
+    if (role === "teacher") {
+      router.replace("/teacher/(tabs)");
+      return;
+    }
+
+    if (role === "parent") {
+      router.replace("/parent/(tabs)");
+      return;
+    }
+
+    if (role === "admin") {
+      router.replace("/admin/(tabs)");
+      return;
+    }
   };
 
   return (
-    <SafeAreaView style={styles.safe}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1 }}
-      >
-        <ScrollView
-          contentContainerStyle={styles.container}
-          keyboardShouldPersistTaps="handled"
+    <>
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor="transparent"
+        translucent
+      />
+
+      <SafeAreaView style={styles.safe}>
+        <KeyboardAvoidingView
+          behavior={
+            Platform.OS === "ios" ? "padding" : "height"
+          }
+          style={{ flex: 1 }}
         >
-          {/* SCHOOL BRAND */}
-          <View style={styles.top}>
-            <Image
-              source={require("../assets/school_logo.png")}
-              style={styles.logo}
-            />
-            <Text style={styles.title}>Divine Mission School</Text>
-            <Text style={styles.sub}>Login Portal</Text>
-          </View>
+          <ScrollView
+            contentContainerStyle={styles.container}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+          >
+            {/* ========== LOGO ========== */}
+            <View style={styles.top}>
+              <Image
+                source={require("../assets/school_logo.png")}
+                style={styles.logo}
+              />
 
-          {/* ROLE */}
-          <Text style={styles.sectionTitle}>Select Role</Text>
+              <Text style={styles.title}>
+                Divine Mission School
+              </Text>
 
-          <View style={styles.roleRow}>
-            {ROLES.map((r) => (
-              <TouchableOpacity
-                key={r.key}
-                style={[
-                  styles.roleCard,
-                  role === r.key && styles.roleActive,
-                ]}
-                onPress={() => setRole(r.key)}
-              >
-                <Ionicons
-                  name={r.icon as any}
-                  size={22}
-                  color={role === r.key ? "#FFFFFF" : "#4A4AFF"}
-                />
-                <Text
+              <Text style={styles.sub}>
+                Login Portal
+              </Text>
+            </View>
+
+            {/* ========== ROLE ========== */}
+            <Text style={styles.sectionTitle}>
+              Select Role
+            </Text>
+
+            <View style={styles.roleRow}>
+              {ROLES.map((r) => (
+                <TouchableOpacity
+                  key={r.key}
                   style={[
-                    styles.roleText,
-                    role === r.key && { color: "#FFFFFF" },
+                    styles.roleCard,
+                    role === r.key &&
+                      styles.roleActive,
                   ]}
+                  activeOpacity={0.8}
+                  onPress={() =>
+                    setRole(r.key)
+                  }
                 >
-                  {r.label}
+                  <Ionicons
+                    name={r.icon as any}
+                    size={22}
+                    color={
+                      role === r.key
+                        ? "#FFFFFF"
+                        : "#4A4AFF"
+                    }
+                  />
+
+                  <Text
+                    style={[
+                      styles.roleText,
+                      role === r.key && {
+                        color: "#FFFFFF",
+                      },
+                    ]}
+                  >
+                    {r.label}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            {/* ========== FORM ========== */}
+            <View style={styles.form}>
+              <TextInput
+                placeholder="Enter ID"
+                placeholderTextColor="#64748B"
+                style={styles.input}
+                value={username}
+                onChangeText={setUsername}
+                autoCapitalize="none"
+              />
+
+              <TextInput
+                placeholder="Enter Password"
+                placeholderTextColor="#64748B"
+                secureTextEntry
+                style={styles.input}
+                value={password}
+                onChangeText={setPassword}
+              />
+
+              <TouchableOpacity
+                style={styles.loginBtn}
+                activeOpacity={0.9}
+                onPress={login}
+              >
+                <Text style={styles.loginText}>
+                  Login
                 </Text>
               </TouchableOpacity>
-            ))}
-          </View>
 
-          {/* FORM */}
-          <View style={styles.form}>
-            <TextInput
-              placeholder={`${role.toUpperCase()} ID`}
-              style={styles.input}
-              value={username}
-              onChangeText={setUsername}
-            />
+              <Text style={styles.note}>
+                Forgot password? Contact school
+                administration
+              </Text>
+            </View>
 
-            <TextInput
-              placeholder="Password"
-              secureTextEntry
-              style={styles.input}
-              value={password}
-              onChangeText={setPassword}
-            />
+            {/* ========== NEW ADMISSION ========== */}
+            <TouchableOpacity
+              style={styles.admissionSection}
+              onPress={() =>
+                router.push("/new-admission")
+              }
+            >
+              <View style={styles.admissionContent}>
+                <View
+                  style={styles.admissionIconBox}
+                >
+                  <Ionicons
+                    name="person-add"
+                    size={24}
+                    color="#4A4AFF"
+                  />
+                </View>
 
-            <TouchableOpacity style={styles.loginBtn} onPress={login}>
-              <Text style={styles.loginText}>Login</Text>
+                <View style={styles.admissionText}>
+                  <Text
+                    style={
+                      styles.admissionTitle
+                    }
+                  >
+                    New Admission
+                  </Text>
+
+                  <Text
+                    style={
+                      styles.admissionSubtitle
+                    }
+                  >
+                    Apply for admission now
+                  </Text>
+                </View>
+
+                <Ionicons
+                  name="chevron-forward"
+                  size={20}
+                  color="#94A3B8"
+                />
+              </View>
             </TouchableOpacity>
-
-            <Text style={styles.note}>
-              Forgot password? Contact school administration
-            </Text>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </>
   );
 }
 
+/* ================= STYLES ================= */
+
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: "#F5F6FF" },
+  safe: {
+    flex: 1,
+    backgroundColor: "#F5F6FF",
+  },
+
   container: {
     padding: 20,
     paddingBottom: 40,
     justifyContent: "center",
   },
 
-  top: { alignItems: "center", marginBottom: 30 },
+  /* TOP */
+  top: {
+    alignItems: "center",
+    marginBottom: 30,
+  },
+
   logo: {
     width: 90,
     height: 90,
-    borderRadius: 18,
+    borderRadius: 16,
     marginBottom: 12,
     backgroundColor: "#FFFFFF",
   },
-  title: { fontSize: 22, fontWeight: "800" },
-  sub: { fontSize: 12, color: "#64748B" },
 
+  title: {
+    fontSize: 22,
+    fontWeight: "800",
+  },
+
+  sub: {
+    fontSize: 12,
+    color: "#64748B",
+    marginTop: 2,
+  },
+
+  /* ROLE */
   sectionTitle: {
     fontSize: 14,
     fontWeight: "700",
@@ -154,6 +295,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 20,
   },
+
   roleCard: {
     width: "48%",
     backgroundColor: "#FFFFFF",
@@ -163,7 +305,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     elevation: 3,
   },
-  roleActive: { backgroundColor: "#4A4AFF" },
+
+  roleActive: {
+    backgroundColor: "#4A4AFF",
+  },
+
   roleText: {
     marginTop: 6,
     fontSize: 13,
@@ -171,17 +317,22 @@ const styles = StyleSheet.create({
     color: "#111827",
   },
 
+  /* FORM */
   form: {
     backgroundColor: "#FFFFFF",
     borderRadius: 20,
     padding: 20,
     elevation: 4,
   },
+
   input: {
     backgroundColor: "#F1F5F9",
     borderRadius: 12,
     padding: 14,
     marginBottom: 12,
+    fontSize: 14,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
   },
 
   loginBtn: {
@@ -191,6 +342,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 8,
   },
+
   loginText: {
     color: "#FFFFFF",
     fontWeight: "800",
@@ -202,5 +354,47 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 12,
     color: "#64748B",
+  },
+
+  /* ADMISSION */
+  admissionSection: {
+    backgroundColor: "#EFF2FF",
+    borderRadius: 14,
+    padding: 12,
+    marginTop: 20,
+    marginBottom: 20,
+    borderLeftWidth: 4,
+    borderLeftColor: "#4A4AFF",
+  },
+
+  admissionContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+
+  admissionIconBox: {
+    width: 44,
+    height: 44,
+    borderRadius: 10,
+    backgroundColor: "#FFFFFF",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  admissionText: {
+    flex: 1,
+  },
+
+  admissionTitle: {
+    fontSize: 13,
+    fontWeight: "800",
+    color: "#4A4AFF",
+  },
+
+  admissionSubtitle: {
+    fontSize: 11,
+    color: "#64748B",
+    marginTop: 2,
   },
 });
